@@ -1,0 +1,29 @@
+{
+  "name": "geointel",
+  "version": "1.0.0",
+  "description": "The geointel project",
+  "main": "sst.config.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DJEURNIE/GeoIntel.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DJEURNIE/GeoIntel/issues"
+  },
+  "homepage": "https://github.com/DJEURNIE/GeoIntel#readme",
+  "workspaces": [
+    "web/"
+  ],
+  "dependencies": {
+    "sst": "^3.9.37"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22",
+    "typescript": "^5"
+  }
+}
