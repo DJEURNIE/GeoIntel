@@ -27,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         user: {
             displayName,
             email: "m@example.com",
-            avatar: "/avatars/shadcn.jpg",
+            avatar: "https://gravatar.com/userimage/48483257/0966cddeab71b2d59df37e3e4bd7cafc.jpeg?size=64",
         }
     }
 }

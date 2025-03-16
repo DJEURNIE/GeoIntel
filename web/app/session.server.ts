@@ -27,7 +27,7 @@ const { getSession, commitSession, destroySession } =
             cookie: {
                 name: "__session",
                 httpOnly: true,
-                maxAge: 60,
+                maxAge: 60*60*24,
                 path: "/",
                 sameSite: "lax",
                 secrets: [Resource.CookieSecret.value],
@@ -46,7 +46,8 @@ export async function requireUser(
     const refreshToken = session.get("refresh_token")
 
     if (!accessToken) {
-        const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "invalid_token"]]);
+        console.log("access token not found");
+        const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "access_token"]]);
         throw redirect(`/auth/login?${searchParams}`);
     }
 
@@ -55,13 +56,17 @@ export async function requireUser(
     })
 
     if (verified.err) {
-        const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "invalid_token"]]);
+        console.log("refresh failed", verified.err.message);
+        const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "refresh_token"]]);
         throw redirect(`/auth/login?${searchParams}`);
     }
 
     if (verified.tokens) {
+        console.log("setting new tokens");
         session.set("access_token", verified.tokens.access);
         session.set("refresh_token", verified.tokens.refresh);
+
+        console.log(verified.tokens.access, verified.tokens.refresh)
 
         throw redirect(redirectTo, {
             headers: {
