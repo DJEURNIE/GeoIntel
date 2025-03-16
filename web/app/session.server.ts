@@ -1,12 +1,16 @@
 import { createClient } from "@openauthjs/openauth/client"
 import { createCookieSessionStorage, redirect } from "react-router";
+import { subjects } from "@geointel/auth/subjects"
 import { Resource } from "sst";
 
 type SessionData = {
     access_token: string;
     refresh_token: string;
-    display_name: string;
 };
+
+type User = {
+    displayName: string;
+}
 
 type SessionFlashData = {
     error: string;
@@ -35,8 +39,8 @@ const { getSession, commitSession, destroySession } =
 export async function requireUser(
     request: Request,
     redirectTo: string = new URL(request.url).pathname,
-) : Promise<SessionData> {
-    const session = await getSession(request);
+) : Promise<User> {
+    const session = await getSession(request.headers.get("Cookie"));
 
     const accessToken = session.get("access_token")
     const refreshToken = session.get("refresh_token")
@@ -46,33 +50,28 @@ export async function requireUser(
         throw redirect(`/login?${searchParams}`);
     }
 
-    let jwt
-    try {
-        jwt = await getJWT(request);
-    } catch (e) {
+    const verified = await client.verify(subjects, accessToken, {
+        refresh: refreshToken,
+    })
+
+    if (verified.err) {
         const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "invalid_token"]]);
         throw redirect(`/login?${searchParams}`);
     }
 
-    if (!jwt) {
-        const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "invalid_token"]]);
-        throw redirect(`/login?${searchParams}`);
-    }
+    if (verified.tokens) {
+        session.set("access_token", verified.tokens.access);
+        session.set("refresh_token", verified.tokens.refresh);
 
-    const claims = decodeJwt(jwt);
-    invariant(
-        claims.exp && claims.sub,
-        "JWT claims must have exp and sub",
-    )
-
-    if (claims.exp < Math.floor(Date.now() / 1000)) {
-        const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "expired"]]);
-        throw redirect(`/login?${searchParams}`);
+        throw redirect(redirectTo, {
+            headers: {
+                "Set-Cookie": await commitSession(session),
+            },
+        });
     }
 
     return {
-        jwt,
-        claims: claims as UserClaims,
+        displayName: verified.subject.properties.id,
     };
 }
 
