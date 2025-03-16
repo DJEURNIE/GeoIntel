@@ -47,7 +47,7 @@ export async function requireUser(
 
     if (!accessToken) {
         const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "invalid_token"]]);
-        throw redirect(`/login?${searchParams}`);
+        throw redirect(`/auth/login?${searchParams}`);
     }
 
     const verified = await client.verify(subjects, accessToken, {
@@ -56,7 +56,7 @@ export async function requireUser(
 
     if (verified.err) {
         const searchParams = new URLSearchParams([["redirectTo", redirectTo], ["reason", "invalid_token"]]);
-        throw redirect(`/login?${searchParams}`);
+        throw redirect(`/auth/login?${searchParams}`);
     }
 
     if (verified.tokens) {
