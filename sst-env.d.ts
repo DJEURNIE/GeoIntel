@@ -5,6 +5,14 @@
 
 declare module "sst" {
   export interface Resource {
+    "CookieSecret": {
+      "type": "sst.sst.Secret"
+      "value": string
+    }
+    "OpenGeoIntelAuth": {
+      "type": "sst.aws.Auth"
+      "url": string
+    }
     "geo-intel": {
       "type": "sst.aws.React"
       "url": string

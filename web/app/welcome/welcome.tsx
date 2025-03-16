@@ -7,12 +7,15 @@ import {
 
 import { Info } from "lucide-react"
 
+import logo from "./opengeointel_logo.png"
+
 export function Welcome() {
   return (
       <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center space-y-8 px-4">
         {/* Header */}
         <header className="text-center prose">
-          <h1>Welcome to Geo Intel</h1>
+          <img src={logo} alt="Open Geo Intel Logo" className="h-32 mx-auto mt-2" />
+          <h1 className="sr-only">Welcome to Open Geo Intel</h1>
           <p>
             Store, manage, analyze and share geolocations.
           </p>
