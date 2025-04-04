@@ -1,4 +1,4 @@
-import type { Route } from "../../../.react-router/types/app/routes/+types";
+import type { Route } from "./+types/auth";
 import {client, commitSession, getSession} from "~/session.server";
 import {data, redirect} from "react-router";
 

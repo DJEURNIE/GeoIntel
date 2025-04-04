@@ -9,6 +9,11 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "Mailer": {
+      "configSet": string
+      "sender": string
+      "type": "sst.aws.Email"
+    }
     "OpenGeoIntelAuth": {
       "type": "sst.aws.Auth"
       "url": string

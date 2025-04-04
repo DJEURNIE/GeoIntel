@@ -9,5 +9,6 @@ export default [
         ...prefix("console", [
             index("routes/dashboard.tsx")
         ])
-    ])
+    ]),
+    route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;

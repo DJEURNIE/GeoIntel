@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.782.0",
     "@openauthjs/openauth": "^0.4.3",
     "hono": "^4.7.4",
     "valibot": "^1.0.0-rc.4"

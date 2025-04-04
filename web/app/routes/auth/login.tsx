@@ -1,4 +1,4 @@
-import type {Route} from "../../../.react-router/types/app/routes/+types";
+import type {Route} from "./+types/login";
 import {client} from "~/session.server";
 import {redirect} from "react-router";
 

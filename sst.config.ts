@@ -9,16 +9,21 @@ export default $config({
       home: "aws",
       providers: {
         aws: {
-          profile: "djeurnie"
+          region: "eu-central-1",
         }
       }
     };
   },
   async run() {
-    const CookieSecret = new sst.Secret("CookieSecret", "3Kte4V!CbAnUcdZ*dKew")
+    const CookieSecret = new sst.Secret("CookieSecret", "3Kte4V!CbAnUcdZ*dKew");
+
+    const Mailer = sst.aws.Email.get("Mailer", "opengeointel.com");
 
     const auth = new sst.aws.Auth("OpenGeoIntelAuth", {
-      issuer: "auth/index.handler",
+      issuer: {
+        handler: "auth/index.handler",
+        link: [Mailer],
+      },
       domain: $app.stage === "production" ? "auth.opengeointel.com" : `auth.${$app.stage}.opengeointel.com`,
     });
 
